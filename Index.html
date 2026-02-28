@@ -1,95 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Loan ROI & Repayment Calculator 2026</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance + Lifestyle Calculator Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-    </style>
-</head> <script async="async" data-cfasync="false" src="https://pl28793242.effectivegatecpm.com/a814cb31ce4dc332711ce2f919ffa21d/invoke.js"></script>
-<div id="container-a814cb31ce4dc332711ce2f919ffa21d"></div>
-<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_10%_20%,rgba(56,189,248,0.14),transparent_35%),radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.14),transparent_32%),radial-gradient(circle_at_50%_90%,rgba(16,185,129,0.12),transparent_35%)]"></div>
 
-    <div class="max-w-4xl mx-auto px-4 py-12">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-black text-blue-700 mb-4 uppercase tracking-tight">Business Capital Predictor</h1>
-            <p class="text-slate-500 font-medium">Calculate high-limit commercial financing costs instantly.</p>
-        </div>
+    <main class="max-w-6xl mx-auto px-4 md:px-8 py-12 md:py-16">
+        <header class="text-center mb-12 md:mb-14">
+            <p class="inline-flex px-3 py-1 rounded-full border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 text-xs uppercase tracking-[0.2em] font-semibold">Modern Calculator Suite</p>
+            <h1 class="mt-5 text-4xl md:text-6xl font-black leading-tight bg-gradient-to-r from-cyan-300 via-sky-400 to-violet-400 text-transparent bg-clip-text">Finance & Lifestyle Command Center</h1>
+            <p class="mt-4 text-slate-300 max-w-2xl mx-auto">Dark-mode, fast, and practical calculators for monthly money plans and healthier lifestyle targets in one place.</p>
+        </header>
 
-        <div class="grid md:grid-cols-2 gap-8 glass p-8 rounded-3xl shadow-2xl border border-white">
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Funding Amount ($)</label>
-                    <input type="number" id="amount" value="100000" class="w-full p-4 bg-slate-100 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 text-xl font-bold">
+        <section class="grid lg:grid-cols-2 gap-6">
+            <article class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7 backdrop-blur-xl shadow-xl shadow-cyan-500/10">
+                <h2 class="text-xl font-bold text-cyan-300">Loan Payment Calculator</h2>
+                <p class="text-sm text-slate-300 mt-1">Estimate monthly EMI with interest split.</p>
+                <div class="space-y-4 mt-5">
+                    <label class="block text-sm">Loan Amount ($)
+                        <input type="number" id="loanAmount" value="120000" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                    </label>
+                    <label class="block text-sm">Interest Rate (% annual)
+                        <input type="range" id="loanRate" min="1" max="30" step="0.1" value="8.5" class="mt-2 w-full accent-cyan-400" />
+                        <div id="loanRateVal" class="text-cyan-300 text-sm mt-1">8.5%</div>
+                    </label>
+                    <label class="block text-sm">Term (months)
+                        <select id="loanTerm" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                            <option value="60" selected>60</option>
+                        </select>
+                    </label>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Interest Rate (%)</label>
-                    <input type="range" id="rate" min="1" max="25" step="0.1" value="8.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    <div id="rateVal" class="text-right font-bold text-blue-600">8.5%</div>
+                <div class="mt-6 p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30">
+                    <div class="text-xs uppercase tracking-wider text-cyan-300">Monthly Payment</div>
+                    <div id="loanMonthly" class="mt-1 text-3xl font-black">$0.00</div>
+                    <canvas id="loanChart" class="mt-4"></canvas>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Term (Months)</label>
-                    <select id="term" class="w-full p-4 bg-slate-100 border-none rounded-2xl font-bold">
-                        <option value="12">12 Months</option>
-                        <option value="24">24 Months</option>
-                        <option value="60">60 Months (5 Years)</option>
-                    </select>
-                </div>
-            </div>
+            </article>
 
-            <div class="bg-blue-700 rounded-3xl p-8 text-white flex flex-col justify-between shadow-inner">
-                <div>
-                    <span class="text-blue-200 text-xs font-bold uppercase tracking-widest">Monthly Payment</span>
-                    <div id="monthlyDisplay" class="text-5xl font-black mt-2">$0.00</div>
+            <article class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7 backdrop-blur-xl shadow-xl shadow-violet-500/10">
+                <h2 class="text-xl font-bold text-violet-300">Savings Goal Planner</h2>
+                <p class="text-sm text-slate-300 mt-1">Know what to save monthly to hit your target.</p>
+                <div class="space-y-4 mt-5">
+                    <label class="block text-sm">Target Amount ($)
+                        <input type="number" id="targetAmount" value="30000" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                    </label>
+                    <label class="block text-sm">Current Savings ($)
+                        <input type="number" id="currentAmount" value="5000" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                    </label>
+                    <label class="block text-sm">Months to Goal
+                        <input type="number" id="goalMonths" value="24" min="1" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                    </label>
                 </div>
-                <div class="mt-8 pt-8 border-t border-blue-600">
-                    <canvas id="loanChart" width="200" height="200"></canvas>
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-violet-400/30">
+                        <div class="text-xs uppercase tracking-wider text-violet-300">Needed Monthly</div>
+                        <div id="monthlySave" class="mt-1 text-2xl font-black">$0.00</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-violet-400/30">
+                        <div class="text-xs uppercase tracking-wider text-violet-300">Gap Remaining</div>
+                        <div id="gapAmount" class="mt-1 text-2xl font-black">$0.00</div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </article>
 
-        <article class="mt-16 prose prose-slate">
-            <h2 class="text-2xl font-bold text-slate-800">Why Use This Business Finance Calculator?</h2>
-            <p class="text-slate-600 mt-4">For businesses looking for <strong>SBA loans</strong>, <strong>inventory financing</strong>, or <strong>commercial real estate credit</strong>, understanding your APR and debt-to-income ratio is vital. This tool helps you prepare for lender requirements by calculating the total interest cost over the life of your loan.</p>
-        </article>
-    </div>
+            <article class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7 backdrop-blur-xl shadow-xl shadow-emerald-500/10">
+                <h2 class="text-xl font-bold text-emerald-300">50/30/20 Budget Split</h2>
+                <p class="text-sm text-slate-300 mt-1">Split income into needs, wants, and savings.</p>
+                <label class="block text-sm mt-5">Monthly Income ($)
+                    <input type="number" id="income" value="5500" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                </label>
+                <div class="mt-6 grid sm:grid-cols-3 gap-3 text-sm">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-emerald-400/30">
+                        <div class="text-emerald-300 uppercase text-xs">Needs (50%)</div>
+                        <div id="needsAmount" class="text-xl font-bold mt-1">$0.00</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-emerald-400/30">
+                        <div class="text-emerald-300 uppercase text-xs">Wants (30%)</div>
+                        <div id="wantsAmount" class="text-xl font-bold mt-1">$0.00</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-emerald-400/30">
+                        <div class="text-emerald-300 uppercase text-xs">Savings (20%)</div>
+                        <div id="saveAmount" class="text-xl font-bold mt-1">$0.00</div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7 backdrop-blur-xl shadow-xl shadow-rose-500/10">
+                <h2 class="text-xl font-bold text-rose-300">Lifestyle Health (BMI)</h2>
+                <p class="text-sm text-slate-300 mt-1">Track your body mass index category.</p>
+                <div class="grid sm:grid-cols-2 gap-4 mt-5">
+                    <label class="block text-sm">Weight (kg)
+                        <input type="number" id="weight" value="72" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                    </label>
+                    <label class="block text-sm">Height (cm)
+                        <input type="number" id="height" value="175" class="mt-2 w-full rounded-xl bg-slate-900/70 border border-white/10 p-3" />
+                    </label>
+                </div>
+                <div class="mt-6 p-4 rounded-2xl bg-slate-900/80 border border-rose-400/30">
+                    <div class="text-xs uppercase tracking-wider text-rose-300">BMI Result</div>
+                    <div id="bmiValue" class="mt-1 text-3xl font-black">0.0</div>
+                    <div id="bmiStatus" class="text-slate-300 mt-1">-</div>
+                </div>
+            </article>
+        </section>
+    </main>
 
     <script>
-        const ctx = document.getElementById('loanChart').getContext('2d');
-        let chart;
+        const currency = (v) => '$' + Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-        function calculate() {
-            const P = parseFloat(document.getElementById('amount').value);
-            const r = parseFloat(document.getElementById('rate').value) / 100 / 12;
-            const n = parseInt(document.getElementById('term').value);
-            
-            document.getElementById('rateVal').innerText = document.getElementById('rate').value + '%';
+        const loanCtx = document.getElementById('loanChart').getContext('2d');
+        let loanChart;
 
-            const monthly = (P * r) / (1 - Math.pow(1 + r, -n));
-            const totalInterest = (monthly * n) - P;
+        function calculateLoan() {
+            const P = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const rate = parseFloat(document.getElementById('loanRate').value) || 0;
+            const n = parseInt(document.getElementById('loanTerm').value) || 1;
+            const r = rate / 100 / 12;
+            document.getElementById('loanRateVal').textContent = rate.toFixed(1) + '%';
 
-            document.getElementById('monthlyDisplay').innerText = '$' + monthly.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            let monthly = 0;
+            if (r === 0) {
+                monthly = P / n;
+            } else {
+                monthly = (P * r) / (1 - Math.pow(1 + r, -n));
+            }
+            const totalInterest = Math.max((monthly * n) - P, 0);
 
-            if(chart) chart.destroy();
-            chart = new Chart(ctx, {
+            document.getElementById('loanMonthly').textContent = currency(monthly || 0);
+
+            if (loanChart) loanChart.destroy();
+            loanChart = new Chart(loanCtx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Principal', 'Interest'],
                     datasets: [{
                         data: [P, totalInterest],
-                        backgroundColor: ['#ffffff', '#60a5fa'],
+                        backgroundColor: ['#22d3ee', '#a855f7'],
                         borderWidth: 0
                     }]
                 },
-                options: { plugins: { legend: { display: false } } }
+                options: {
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0' } }
+                    }
+                }
             });
         }
 
-        document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
-        calculate();
+        function calculateSavingsGoal() {
+            const target = parseFloat(document.getElementById('targetAmount').value) || 0;
+            const current = parseFloat(document.getElementById('currentAmount').value) || 0;
+            const months = Math.max(parseInt(document.getElementById('goalMonths').value) || 1, 1);
+            const gap = Math.max(target - current, 0);
+            const monthly = gap / months;
+
+            document.getElementById('monthlySave').textContent = currency(monthly);
+            document.getElementById('gapAmount').textContent = currency(gap);
+        }
+
+        function calculateBudgetSplit() {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            document.getElementById('needsAmount').textContent = currency(income * 0.5);
+            document.getElementById('wantsAmount').textContent = currency(income * 0.3);
+            document.getElementById('saveAmount').textContent = currency(income * 0.2);
+        }
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value) || 0;
+            const heightCm = parseFloat(document.getElementById('height').value) || 0;
+            const heightM = heightCm / 100;
+
+            if (!weight || !heightM) {
+                document.getElementById('bmiValue').textContent = '0.0';
+                document.getElementById('bmiStatus').textContent = '-';
+                return;
+            }
+
+            const bmi = weight / (heightM * heightM);
+            let status = 'Normal';
+            if (bmi < 18.5) status = 'Underweight';
+            else if (bmi >= 25 && bmi < 30) status = 'Overweight';
+            else if (bmi >= 30) status = 'Obese';
+
+            document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+            document.getElementById('bmiStatus').textContent = status;
+        }
+
+        const calculators = [calculateLoan, calculateSavingsGoal, calculateBudgetSplit, calculateBMI];
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', () => calculators.forEach(fn => fn()));
+            el.addEventListener('change', () => calculators.forEach(fn => fn()));
+        });
+
+        calculators.forEach(fn => fn());
     </script>
 </body>
 </html>
