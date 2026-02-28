@@ -9,17 +9,15 @@
     <style>
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
     </style>
-</head> <script async="async" data-cfasync="false" src="https://pl28793242.effectivegatecpm.com/a814cb31ce4dc332711ce2f919ffa21d/invoke.js"></script>
-<div id="container-a814cb31ce4dc332711ce2f919ffa21d"></div>
+</head>
 <body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
-
-    <div class="max-w-4xl mx-auto px-4 py-12">
-        <div class="text-center mb-12">
+    <div class="max-w-5xl mx-auto px-4 py-12 space-y-10">
+        <div class="text-center">
             <h1 class="text-4xl font-black text-blue-700 mb-4 uppercase tracking-tight">Business Capital Predictor</h1>
             <p class="text-slate-500 font-medium">Calculate high-limit commercial financing costs instantly.</p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 glass p-8 rounded-3xl shadow-2xl border border-white">
+        <section class="grid md:grid-cols-2 gap-8 glass p-8 rounded-3xl shadow-2xl border border-white">
             <div class="space-y-6">
                 <div>
                     <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Funding Amount ($)</label>
@@ -44,16 +42,44 @@
                 <div>
                     <span class="text-blue-200 text-xs font-bold uppercase tracking-widest">Monthly Payment</span>
                     <div id="monthlyDisplay" class="text-5xl font-black mt-2">$0.00</div>
+                    <p id="interestDisplay" class="mt-4 text-blue-100 font-medium">Total Interest: $0.00</p>
                 </div>
                 <div class="mt-8 pt-8 border-t border-blue-600">
                     <canvas id="loanChart" width="200" height="200"></canvas>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <article class="mt-16 prose prose-slate">
+        <section class="glass p-8 rounded-3xl shadow-2xl border border-white">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">More Business Tools</h2>
+            <div class="grid lg:grid-cols-3 gap-6">
+                <article class="bg-slate-100 rounded-2xl p-5 space-y-3">
+                    <h3 class="font-black text-slate-800">Break-even Units</h3>
+                    <input id="fixedCost" type="number" value="25000" class="w-full p-3 rounded-xl" placeholder="Fixed Costs ($)">
+                    <input id="unitPrice" type="number" value="120" class="w-full p-3 rounded-xl" placeholder="Unit Price ($)">
+                    <input id="unitCost" type="number" value="70" class="w-full p-3 rounded-xl" placeholder="Variable Cost per Unit ($)">
+                    <p id="breakEvenOutput" class="font-bold text-blue-700">Break-even: 0 units</p>
+                </article>
+
+                <article class="bg-slate-100 rounded-2xl p-5 space-y-3">
+                    <h3 class="font-black text-slate-800">Profit Margin</h3>
+                    <input id="revenue" type="number" value="50000" class="w-full p-3 rounded-xl" placeholder="Revenue ($)">
+                    <input id="expenses" type="number" value="35000" class="w-full p-3 rounded-xl" placeholder="Expenses ($)">
+                    <p id="profitOutput" class="font-bold text-blue-700">Net Profit: $0.00 (0%)</p>
+                </article>
+
+                <article class="bg-slate-100 rounded-2xl p-5 space-y-3">
+                    <h3 class="font-black text-slate-800">Savings Goal Planner</h3>
+                    <input id="goalAmount" type="number" value="60000" class="w-full p-3 rounded-xl" placeholder="Goal Amount ($)">
+                    <input id="monthsGoal" type="number" value="12" class="w-full p-3 rounded-xl" placeholder="Months to Reach Goal">
+                    <p id="goalOutput" class="font-bold text-blue-700">Required Monthly Savings: $0.00</p>
+                </article>
+            </div>
+        </section>
+
+        <article class="prose prose-slate">
             <h2 class="text-2xl font-bold text-slate-800">Why Use This Business Finance Calculator?</h2>
-            <p class="text-slate-600 mt-4">For businesses looking for <strong>SBA loans</strong>, <strong>inventory financing</strong>, or <strong>commercial real estate credit</strong>, understanding your APR and debt-to-income ratio is vital. This tool helps you prepare for lender requirements by calculating the total interest cost over the life of your loan.</p>
+            <p class="text-slate-600 mt-4">For businesses looking for <strong>SBA loans</strong>, <strong>inventory financing</strong>, or <strong>commercial real estate credit</strong>, understanding your APR and debt-to-income ratio is vital. This tool helps you prepare for lender requirements by calculating the total interest cost over the life of your loan and by giving quick operational tools for planning.</p>
         </article>
     </div>
 
@@ -61,19 +87,23 @@
         const ctx = document.getElementById('loanChart').getContext('2d');
         let chart;
 
-        function calculate() {
-            const P = parseFloat(document.getElementById('amount').value);
-            const r = parseFloat(document.getElementById('rate').value) / 100 / 12;
-            const n = parseInt(document.getElementById('term').value);
-            
-            document.getElementById('rateVal').innerText = document.getElementById('rate').value + '%';
+        const formatMoney = (value) => '$' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            const monthly = (P * r) / (1 - Math.pow(1 + r, -n));
-            const totalInterest = (monthly * n) - P;
+        function calculateLoan() {
+            const P = parseFloat(document.getElementById('amount').value) || 0;
+            const annualRate = parseFloat(document.getElementById('rate').value) || 0;
+            const r = annualRate / 100 / 12;
+            const n = parseInt(document.getElementById('term').value) || 1;
 
-            document.getElementById('monthlyDisplay').innerText = '$' + monthly.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('rateVal').innerText = annualRate + '%';
 
-            if(chart) chart.destroy();
+            const monthly = r === 0 ? P / n : (P * r) / (1 - Math.pow(1 + r, -n));
+            const totalInterest = Math.max((monthly * n) - P, 0);
+
+            document.getElementById('monthlyDisplay').innerText = formatMoney(monthly);
+            document.getElementById('interestDisplay').innerText = 'Total Interest: ' + formatMoney(totalInterest);
+
+            if (chart) chart.destroy();
             chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -88,8 +118,35 @@
             });
         }
 
-        document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
-        calculate();
+        function calculateTools() {
+            const fixedCost = parseFloat(document.getElementById('fixedCost').value) || 0;
+            const unitPrice = parseFloat(document.getElementById('unitPrice').value) || 0;
+            const unitCost = parseFloat(document.getElementById('unitCost').value) || 0;
+            const contribution = unitPrice - unitCost;
+            const breakEvenUnits = contribution > 0 ? Math.ceil(fixedCost / contribution) : 0;
+            document.getElementById('breakEvenOutput').innerText = `Break-even: ${breakEvenUnits.toLocaleString()} units`;
+
+            const revenue = parseFloat(document.getElementById('revenue').value) || 0;
+            const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+            const profit = revenue - expenses;
+            const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+            document.getElementById('profitOutput').innerText = `Net Profit: ${formatMoney(profit)} (${margin.toFixed(1)}%)`;
+
+            const goalAmount = parseFloat(document.getElementById('goalAmount').value) || 0;
+            const monthsGoal = parseFloat(document.getElementById('monthsGoal').value) || 0;
+            const neededMonthly = monthsGoal > 0 ? goalAmount / monthsGoal : 0;
+            document.getElementById('goalOutput').innerText = `Required Monthly Savings: ${formatMoney(neededMonthly)}`;
+        }
+
+        document.querySelectorAll('input, select').forEach((el) => {
+            el.addEventListener('input', () => {
+                calculateLoan();
+                calculateTools();
+            });
+        });
+
+        calculateLoan();
+        calculateTools();
     </script>
 </body>
 </html>
